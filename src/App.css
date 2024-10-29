@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* App.css */
+form {
+  max-width: 400px;
+  margin: auto;
+}
+
+form_div {
+  margin-bottom: 15px;
+}
+
+form_label {
+  font-weight: bold;
+}
+
+form_input, form_textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
