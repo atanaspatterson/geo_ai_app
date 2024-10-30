@@ -1,11 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import BasicForm from './form';
+import SearchForm from './searchForm/SearchForm';
 
 function App() {
+  const handleSearch = (query) => {
+    console.log("User searched for:", query);
+    // Add logic to handle the search query
+  };
+
   return (
-    BasicForm()
+    <div className="App">
+      <SearchForm onSearch={handleSearch} placeholder="Type your query..." />
+    </div>
   );
 }
 
