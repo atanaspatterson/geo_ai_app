@@ -12,7 +12,10 @@ function SearchForm({ placeholder = "Search...", onSearch }) {
 
   return (
   <div className="search-container">
-  <h1 className="logo-text">GEO AI</h1>
+    <div className="logo-container">
+      <h1 className="logo-text">GEO AI</h1>
+      <p className="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
   
   {/* Search Form */}
   <form className="search-form" onSubmit={handleSubmit}>
@@ -47,7 +50,7 @@ function SearchForm({ placeholder = "Search...", onSearch }) {
     <input
       name="location"
       type="text"
-      placeholder="Enter Location"
+      placeholder="Enter location"
       className="location-input"
     />
 
@@ -56,13 +59,26 @@ function SearchForm({ placeholder = "Search...", onSearch }) {
       <label for="outputFormat">Output Format</label>
       <select name="outputFormat" id="outputFormat" className="format-select">
         <option value="PDF">.PDF</option>
-        <option value="TID">.TID</option>
+        <option value="TIF">.TIF</option>
       </select>
     </div>
     </div>
     <button type="submit" className="search-button">Search</button>
   </form>
+  <div className="results">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </div>
+  
   );
 }
 
