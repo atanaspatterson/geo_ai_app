@@ -12,15 +12,7 @@ function SearchForm({ placeholder = "Search...", onSearch }) {
 
   return (
     <div className={styles['search-container']}>
-      <div className={styles['logo-container']}>
-        <h1 className={styles['logo-text']}>GEO AI</h1>
-        <p className={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-      </div>
-
-      {/* Search Form */}
+      <h1 className={styles['logo-text']}>GEO AI</h1>
       <form className={styles.searchform} onSubmit={handleSubmit}>
         <input
           name="searchInput"
@@ -29,62 +21,20 @@ function SearchForm({ placeholder = "Search...", onSearch }) {
           className={styles['search-input']}
           autoComplete="off"
         />
-
-        <div className={styles['bottom-row']}>
-          {/* Date Range Input */}
-          <div className={styles['date-range']}>
-            <label htmlFor="startDate">Start Date</label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              className={styles['date-input']}
-            />
-            <label htmlFor="endDate">End Date</label>
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              className={styles['date-input']}
-            />
-          </div>
-
-          {/* Location Input */}
-          <input
-            name="location"
-            type="text"
-            placeholder="Enter location"
-            className={styles['location-input']}
-          />
-
-          {/* Output Format Selector */}
-          <div className={styles['output-format']}>
-            <label htmlFor="outputFormat">Output Format</label>
-            <select
-              name="outputFormat"
-              id="outputFormat"
-              className={styles['format-select']}
-            >
-              <option value="PDF">.PDF</option>
-              <option value="TIF">.TIF</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" className={styles['search-button']}>Search</button>
+        <button type="submit" className={styles['search-button']}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="white"
+          width="24px"
+          height="24px"
+        >
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path d="M12 4l1.41 1.41L6.83 12H20v2H6.83l6.58 6.59L12 20l-8-8 8-8z" />
+    </svg>
+        </button>
       </form>
 
-      <div className={styles.results}>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
     </div>
   );
 }
