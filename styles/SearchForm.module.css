@@ -55,7 +55,7 @@
 }
 
 .file-input {
-  position: absolute;
+  position: bottom;
   max-width: 150px;
   right: 405px;
   width: auto;
