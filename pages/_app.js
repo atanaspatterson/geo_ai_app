@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchForm onSearch={handleSearch} placeholder="Type your query..." />
+      <SearchForm onSearch={handleSearch} placeholder="Please enter a query..." />
     </div>
   );
 }

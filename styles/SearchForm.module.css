@@ -1,12 +1,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-.search-container {
+/* .search-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   justify-content: center;
-}
+} */
 
 
 .logo-text {
@@ -15,13 +14,14 @@
   font-weight: 700;
   font-style: normal;
   padding-top: 200px;
-  color: #eaf1ff;
+  color: #ffffff;
   text-align: center;
   display: inline-block;
   letter-spacing: 1px;
   border-radius: 16px;
   padding-left: 20px;
   padding-right: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .searchform {
@@ -38,13 +38,17 @@
   width: 50%;
   padding: 15px;
   font-size: 18px;
-  background-color: #cecece;
+  background-color: #ebebeb;
   border-radius: 30px;
+  border: none;
   outline: none;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 .search-input::placeholder {
+  font-family: Inter;
+  font-weight: 400;
   color: #3a3a3a; /* A darker shade for better contrast */
   opacity: 1; /* Ensures it's fully opaque */
 }
@@ -52,75 +56,22 @@
 .search-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   align-items: center;
   justify-content: flex-start;
+  height: 100vh;
+
   background-color: #fff; 
   padding: 20px;
   background-color: #a6d8fe !important; /* Optional background color */
-  background-image: url('../public/bg.jpg'); /* Background image */
+  background-image: url('../public/worldBG.png'); /* Background image */
   background-size: cover; /* Cover the entire page */
-  background-position: center; /* Center the background image */
+  background-position: unset;
 }
-
-
-
-/* .search-form {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  align-items: center;
-  width: 100%;
-  max-width: 700px;
-}
-
-
-
-
-.search-input {
-  grid-column: span 2;
-  width: 100%;
-  padding: 15px;
-  font-size: 18px;
-  border: 1px solid #dfe1e5;
-  border-radius: 8px;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  border-color: #4285f4;
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-} */
-
-
-
-
-/* .search-button {
-  padding: 15px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #4285f4;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  grid-column: span 2;
-}
-
-.search-button:hover {
-  background-color: #357ae8;
-}
-
-.search-button:active {
-  background-color: #2c5dab;
-} */
 
 .search-button {
-  width: 50px; /* Adjust size as needed */
-  height: 50px;
-  background-color: rgb(0, 0, 0, 0.0);
+  width: 60px;
+  height: 60px;
+  background-color: transparent; /* Makes button background transparent */
   border: none;
   border-radius: 50%;
   display: flex;
@@ -131,17 +82,22 @@
 }
 
 .search-button svg {
-  fill: white;
-  width: 24px;
-  height: 24px;
-  transform: rotate(180deg);
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease, fill 0.3s ease, stroke 0.3s ease;
 }
 
-.search-button:hover {
-  background-color: #357ae8;
-}
+.search-button:hover svg {
+  transform: rotate(270deg) translateY(3px); /* Moves the SVG slightly to the right */
+} 
 
-.search-button:active {
-  background-color: #2c5dab;
+
+
+
+
+.arrow-icon {
+  width: 110px;
+  height: 300px;
+  transform: rotate(270deg);
 }
 
