@@ -95,7 +95,7 @@
   background-color: #fff; 
   padding: 20px;
   background-color: #a6d8fe !important; /* Optional background color */
-  background-image: url('../public/worldBG.png'); /* Background image */
+  background-image: url('../../public/worldBG.png'); /* Background image */
   background-size: cover; /* Cover the entire page */
   background-position: unset;
 }
