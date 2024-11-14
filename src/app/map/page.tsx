@@ -160,7 +160,7 @@ export default function MapPage() {
     }
 
     return (
-        <main className="w-full max-w-2xl mx-auto mb-4">
+        <main className="w-full">
             <div className="mb-4">
                 <div className="flex justify-center gap-2">
                     <h1 className="text-2xl font-bold" >GEO AI MAP CLIENT</h1>
