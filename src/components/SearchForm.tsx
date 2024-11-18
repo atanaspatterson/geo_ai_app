@@ -1,6 +1,6 @@
 'use client';
 
-import React, {FormEvent} from 'react';
+import React, { FormEvent } from 'react';
 import styles from '../styles/SearchForm.module.css';
 import { useState } from 'react';
 import { redirect } from 'next/navigation'
@@ -19,7 +19,7 @@ function SearchForm({ placeholder = "OOO", onSearch }: SearchFormProps) {
         const query = (form.elements.namedItem('searchInput') as HTMLInputElement).value;
         if (query != "") {
             if (onSearch) {
-              onSearch(query);
+                onSearch(query);
             }
             redirect('/map')
         }
@@ -31,7 +31,7 @@ function SearchForm({ placeholder = "OOO", onSearch }: SearchFormProps) {
 
 
     return (
-        <div className={styles['search-container']}>
+        <div className={styles['search-container'] }>
             <h1 className={styles['logo-text']}>GEO AI</h1>
             <form className={styles.searchform} onSubmit={handleSubmit}>
                 <input

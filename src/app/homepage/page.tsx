@@ -1,6 +1,6 @@
 'use client';
-import Head from 'next/head'
 import SearchForm from '@/components/SearchForm'
+import Header from '@/components/Header'
 
 export default function HomePage() {
     const handleSearch = (query: string) => {
@@ -9,14 +9,10 @@ export default function HomePage() {
 
     return (
         <>
-            <Head>
-                <title>GEO AI</title>
-                <meta name="description" content="GEO AI GIS APPLICATION" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-            </Head>
-            <main>
+            <Header />
+            <div className="w-full min-h-screen">
                 <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
-            </main>
+            </div>
         </>
     )
 }
