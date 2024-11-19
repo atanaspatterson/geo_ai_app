@@ -1,4 +1,5 @@
 'use client';
+import Header from '@/components/Header'
 
 import { useEffect } from 'react';
 import Head from 'next/head'
@@ -26,15 +27,11 @@ export default function HomePage() {
 
     return (
         <>
-            <Head>
-                <title>GeoAI</title>
-                <meta name="description" content="GEO AI GIS APPLICATION" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-            </Head>
-            <main>
+            <Header />
+            <div className="w-full min-h-screen">
                 <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
                 <Footer /> {}
-            </main>
+            </div>
         </>
     )
 }
