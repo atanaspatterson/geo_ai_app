@@ -1,16 +1,19 @@
 'use client';
 
-import React, { FormEvent } from 'react';
+import React, {FormEvent, useEffect} from 'react';
 import styles from '../styles/SearchForm.module.css';
 import { useState } from 'react';
 import { redirect } from 'next/navigation'
+import { createClient } from '@supabase/supabase-js'
+
+
 
 interface SearchFormProps {
     placeholder?: string;
     onSearch?: (query: string) => void;
 }
 
-function SearchForm({ placeholder = "OOO", onSearch }: SearchFormProps) {
+function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
     const [activeMode, setActiveMode] = useState('insert');
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -30,9 +33,31 @@ function SearchForm({ placeholder = "OOO", onSearch }: SearchFormProps) {
     };
 
 
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    async function handleSignInWithGoogle(response: any) {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        const { data, error } = await supabase.auth.signInWithIdToken({
+          provider: 'google',
+          token: response.credential,
+        })
+      }
+
     return (
         <div className={styles['search-container'] }>
             <h1 className={styles['logo-text']}>GEO AI</h1>
+
             <form className={styles.searchform} onSubmit={handleSubmit}>
                 <input
                     name="searchInput"
@@ -80,8 +105,27 @@ function SearchForm({ placeholder = "OOO", onSearch }: SearchFormProps) {
                     Query LLM
                 </button>
             </div>
+            <div className="google-button-container" style={{ position: 'absolute', top: '20px', left: '15px', zIndex: 1000 }}>
+                <div id="g_id_onload"
+                    data-client_id="184726098190-1m606884he357gfcn05efog6k52bi2bb.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-login_uri="https://mphmxmuammhnxmucxlko.supabase.co/auth/v1/callback"
+                    data-auto_prompt="false">
+                </div>
 
+                <div className="g_id_signin"
+                    data-type="standard"
+                    data-shape="rectangular"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="left">
+                </div>
+            </div>
+            <script src="https://accounts.google.com/gsi/client" async></script>
         </div>
+        
     );
 }
 
