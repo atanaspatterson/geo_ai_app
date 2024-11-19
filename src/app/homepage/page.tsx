@@ -7,18 +7,18 @@ import Footer from '@/components/Footer';
 import fetchQueries from '@/supabase/supabaseClient';
 
 export default function HomePage() {
-    useEffect(() => {
-        const logQueries = async () => {
-            const { countries, error } = await fetchQueries();
-            if (error) {
-                console.error('Error fetching queries:', error);
-            } else {
-                console.log('Fetched queries:', countries);
-            }
-        };
+    // useEffect(() => {
+    //     const logQueries = async () => {
+    //         const { countries, error } = await fetchQueries();
+    //         if (error) {
+    //             console.error('Error fetching queries:', error);
+    //         } else {
+    //             console.log('Fetched queries:', countries);
+    //         }
+    //     };
 
-        logQueries();
-    }, []);
+    //     logQueries();
+    // }, []);
     
     const handleSearch = (query: string) => {
         console.log("User searched for:", query)

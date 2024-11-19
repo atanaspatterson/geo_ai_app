@@ -10,7 +10,6 @@ function Footer() {
                 <p>&copy; 2024 GeoAI. All rights reserved.</p>
                 <nav>
                     <ul className={styles['footer-links']}>
-                        <li><a href="/aboutpage">About Us</a></li>
                         <li><a href="/contact">Contact</a></li>
                         <li><a href="https://github.com/willystout/geo_ai_app">GitHub</a></li>
                     </ul>
