@@ -22,7 +22,7 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
         const query = (form.elements.namedItem('searchInput') as HTMLInputElement).value;
         if (query != "") {
             if (onSearch) {
-              onSearch(query);
+                onSearch(query);
             }
             redirect('/map')
         }
@@ -55,8 +55,9 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
       }
 
     return (
-        <div className={styles['search-container']}>
-            <h1 className={styles['logo-text']}>GeoAI</h1>
+        <div className={styles['search-container'] }>
+            <h1 className={styles['logo-text']}>GEO AI</h1>
+
             <form className={styles.searchform} onSubmit={handleSubmit}>
                 <input
                     name="searchInput"
