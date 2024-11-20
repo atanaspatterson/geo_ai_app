@@ -1,30 +1,68 @@
-'use client';
-
-import React, {FormEvent, useEffect} from 'react';
+'use client'
+import React, { FormEvent, useEffect } from 'react';
 import styles from '../styles/SearchForm.module.css';
 import { useState } from 'react';
-import { redirect } from 'next/navigation'
-import { createClient } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 
-
+interface Location {
+  title: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  type: string;
+  description: string;
+}
 
 interface SearchFormProps {
     placeholder?: string;
-    onSearch?: (query: string) => void;
+    onSearch?: (locations: Location[]) => void;
 }
 
 function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
-    const [activeMode, setActiveMode] = useState('insert');
+    const [activeMode, setActiveMode] = useState('query');
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         const form = e.target as HTMLFormElement;
         const query = (form.elements.namedItem('searchInput') as HTMLInputElement).value;
-        if (query != "") {
-            if (onSearch) {
-                onSearch(query);
+        
+        if (query !== "") {
+            try {
+                const response = await fetch('/api/locations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch locations');
+                }
+
+                const data = await response.json();
+                
+                // Store the locations in localStorage for the map page
+                localStorage.setItem('mapLocations', JSON.stringify(data.locations));
+                
+                // Call onSearch if provided
+                if (onSearch) {
+                    onSearch(data.locations);
+                }
+
+                // Navigate to map page
+                router.push('/map');
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+                // Handle error appropriately
+            } finally {
+                setIsLoading(false);
             }
-            redirect('/map')
         }
     };
 
