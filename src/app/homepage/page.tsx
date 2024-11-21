@@ -21,17 +21,17 @@ export default function HomePage() {
     //     logQueries();
     // }, []);
     
-    const handleSearch = (query: string) => {
-        console.log("User searched for:", query)
-    }
+    // const handleSearch = (query: string) => {
+    //     console.log("User searched for:", query)
+    // }
 
-    return (
-        <>
-            <Header />
-            <div className="w-full min-h-screen">
-                <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
-                <Footer /> {}
-            </div>
-        </>
-    )
+    // return (
+    //     <>
+    //         <Header />
+    //         <div className="w-full min-h-screen">
+    //             <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
+    //             <Footer /> {}
+    //         </div>
+    //     </>
+    // )s
 }
