@@ -17,7 +17,7 @@ interface Location {
 
 interface SearchFormProps {
     placeholder?: string;
-    onSearch?: (locations: Location[]) => void;
+    onSearch?: (locations: string) => void;
 }
 
 function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
