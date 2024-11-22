@@ -5,6 +5,16 @@ import { useEffect, useRef, useState } from 'react'
 type MapInstance = google.maps.Map
 type MarkerInstance = google.maps.Marker
 
+interface Location {
+    title: string;
+    coordinates: {
+        lat: number;
+        lng: number;
+    };
+    type: string;
+    description: string;
+}
+
 declare global {
     interface Window {
         initMap?: () => void
@@ -15,8 +25,9 @@ declare global {
 export default function MapPage() {
     const mapRef = useRef<HTMLDivElement | null>(null)
     const [mapInstance, setMapInstance] = useState<MapInstance | null>(null)
-    const [markerInstance, setMarkerInstance] = useState<MarkerInstance | null>(null)
+    const [markers, setMarkers] = useState<MarkerInstance[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [locations, setLocations] = useState<Location[]>([])
 
     const initialCenter: google.maps.LatLngLiteral = {
         lat: 37.7749,
@@ -24,6 +35,12 @@ export default function MapPage() {
     }
 
     useEffect(() => {
+        // Load locations from localStorage
+        const savedLocations = localStorage.getItem('mapLocations');
+        if (savedLocations) {
+            setLocations(JSON.parse(savedLocations));
+        }
+
         const initMap = () => {
             if (!mapRef.current) return
 
@@ -50,70 +67,55 @@ export default function MapPage() {
                 const map = new google.maps.Map(mapRef.current, mapOptions)
                 setMapInstance(map)
 
-                const markerOptions: google.maps.MarkerOptions = {
-                    position: initialCenter,
-                    map: map,
-                    title: "New York City",
-                    animation: google.maps.Animation.DROP,
-                    draggable: true
-                }
+                // Create markers for all locations
+                const savedLocations = localStorage.getItem('mapLocations');
+                if (savedLocations) {
+                    const locations: Location[] = JSON.parse(savedLocations);
+                    const bounds = new google.maps.LatLngBounds();
+                    const newMarkers: MarkerInstance[] = [];
 
-                const marker = new google.maps.Marker(markerOptions)
-                setMarkerInstance(marker)
-
-                const infoWindowOptions: google.maps.InfoWindowOptions = {
-                    content: `
-            <div class="p-2">
-              <h3 class="font-bold">New York City</h3>
-              <p>The City That Never Sleeps</p>
-              <p class="text-sm text-gray-500">Click and drag marker to move</p>
-            </div>
-          `,
-                    maxWidth: 200
-                }
-
-                const infoWindow = new google.maps.InfoWindow(infoWindowOptions)
-
-                marker.addListener('click', () => {
-                    infoWindow.open({
-                        map,
-                        anchor: marker
-                    })
-                })
-
-                marker.addListener('dragend', () => {
-                    const position = marker.getPosition()
-                    if (position) {
-                        const newPos = {
-                            lat: position.lat(),
-                            lng: position.lng()
-                        }
-                        map.panTo(newPos)
-                        console.log('New position:', newPos)
-                    }
-                })
-
-                map.addListener('click', (e: google.maps.MapMouseEvent) => {
-                    if (e.latLng) {
-                        const clickedPos = {
-                            lat: e.latLng.lat(),
-                            lng: e.latLng.lng()
-                        }
-
-                        new google.maps.Marker({
-                            position: clickedPos,
+                    locations.forEach((location) => {
+                        const marker = new google.maps.Marker({
+                            position: location.coordinates,
                             map: map,
-                            animation: google.maps.Animation.DROP,
-                            title: `Marker at ${clickedPos.lat}, ${clickedPos.lng}`
-                        })
-                    }
-                })
+                            title: location.title,
+                            animation: google.maps.Animation.DROP
+                        });
 
-                const loadingElement = document.getElementById('map-loading')
-                if (loadingElement) {
-                    loadingElement.style.display = 'none'
+                        const infoWindow = new google.maps.InfoWindow({
+                            content: `
+                                <div class="p-3">
+                                    <h3 class="font-bold text-lg">${location.title}</h3>
+                                    <p class="text-gray-600">${location.description}</p>
+                                    <p class="text-sm text-gray-500 mt-2">Type: ${location.type}</p>
+                                </div>
+                            `,
+                            maxWidth: 300
+                        });
+
+                        marker.addListener('click', () => {
+                            infoWindow.open({
+                                map,
+                                anchor: marker
+                            });
+                        });
+
+                        bounds.extend(location.coordinates);
+                        newMarkers.push(marker);
+                    });
+
+                    setMarkers(newMarkers);
+
+                    // Fit map to show all markers
+                    if (locations.length > 0) {
+                        map.fitBounds(bounds);
+                        // Add some padding to the bounds
+                        const padding = { top: 50, right: 50, bottom: 50, left: 50 };
+                        map.panToBounds(bounds, padding);
+                    }
                 }
-                setIsLoading(false)
+
+                setIsLoading(false);
 
             } catch (error) {
                 console.error('Error initializing map:', error)
@@ -138,14 +140,20 @@ export default function MapPage() {
                 script.parentNode.removeChild(script)
             }
             window.initMap = undefined
+            // Clear markers
+            markers.forEach(marker => marker.setMap(null));
         }
     }, [])
 
     const handleResetMap = () => {
-        if (mapInstance && markerInstance) {
-            mapInstance.setCenter(initialCenter)
-            mapInstance.setZoom(12)
-            markerInstance.setPosition(initialCenter)
+        if (mapInstance && markers.length > 0) {
+            const bounds = new google.maps.LatLngBounds();
+            markers.forEach(marker => {
+                bounds.extend(marker.getPosition()!);
+            });
+            mapInstance.fitBounds(bounds);
+            const padding = { top: 50, right: 50, bottom: 50, left: 50 };
+            mapInstance.panToBounds(bounds, padding);
         }
     }
 
@@ -163,8 +171,13 @@ export default function MapPage() {
         <main className="w-full">
             <div className="mb-4">
                 <div className="flex justify-center gap-2">
-                    <h1 className="text-2xl font-bold" >GEO AI MAP CLIENT</h1>
+                    <h1 className="text-2xl font-bold">GEO AI MAP CLIENT</h1>
                 </div>
+                {locations.length > 0 && (
+                    <p className="text-center text-gray-600 mt-2">
+                        Showing {locations.length} locations
+                    </p>
+                )}
             </div>
             <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
                 <div className="relative">
@@ -186,12 +199,12 @@ export default function MapPage() {
             </div>
 
             <div className="mt-4 p-4 bg-white rounded-lg shadow border border-gray-200">
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-4">
                     <button
                         onClick={handleResetMap}
                         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
                     >
-                        Reset View
+                        Show All Markers
                     </button>
                     <button
                         onClick={handleToggleTerrain}

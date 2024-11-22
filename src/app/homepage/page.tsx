@@ -21,16 +21,16 @@ export default function HomePage() {
     // }, []);
     
     const handleSearch = (query: string) => {
-        console.log("User searched for:", query)
-    }
+         console.log("User searched for:", query)
+     }
 
-    return (
-        <>
-            <Header />
-            <div className="w-full min-h-screen">
-                <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
-                <Footer /> {}
-            </div>
-        </>
-    )
+     return (
+         <>
+             <Header />
+             <div className="w-full min-h-screen">
+                 <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
+                 <Footer /> {}
+             </div>
+         </>
+     )
 }
