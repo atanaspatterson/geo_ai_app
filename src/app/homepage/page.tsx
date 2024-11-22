@@ -1,8 +1,7 @@
 'use client';
-import Header from '@/components/Header'
 
+import Header from '@/components/Header'
 import { useEffect } from 'react';
-import Head from 'next/head'
 import SearchForm from '@/components/SearchForm'
 import Footer from '@/components/Footer';
 import fetchQueries from '@/supabase/supabaseClient';
