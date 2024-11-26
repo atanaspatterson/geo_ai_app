@@ -1,8 +1,7 @@
 'use client';
-import Header from '@/components/Header'
 
+import Header from '@/components/Header'
 import { useEffect } from 'react';
-import Head from 'next/head'
 import SearchForm from '@/components/SearchForm'
 import Footer from '@/components/Footer';
 import fetchQueries from '@/supabase/supabaseClient';
@@ -22,16 +21,16 @@ export default function HomePage() {
     // }, []);
     
     const handleSearch = (query: string) => {
-        console.log("User searched for:", query)
-    }
+         console.log("User searched for:", query)
+     }
 
-    return (
-        <>
-            <Header />
-            <div className="w-full min-h-screen">
-                <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
-                <Footer /> {}
-            </div>
-        </>
-    )
+     return (
+         <>
+             <Header />
+             <div className="w-full min-h-screen">
+                 <SearchForm onSearch={handleSearch} placeholder="Please enter your query..." />
+                 <Footer /> {}
+             </div>
+         </>
+     )
 }

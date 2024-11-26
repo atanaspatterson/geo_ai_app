@@ -12,10 +12,21 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+import { useRouter } from 'next/navigation';
+
+interface Location {
+  title: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  type: string;
+  description: string;
+}
 
 interface SearchFormProps {
     placeholder?: string;
-    onSearch?: (query: string) => void;
+    onSearch?: (locations: string) => void;
 }
 
 interface QueryHistory {
@@ -67,6 +78,47 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
 
         if (error) {
             console.error('Error logging in with Google:', error);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        const form = e.target as HTMLFormElement;
+        const query = (form.elements.namedItem('searchInput') as HTMLInputElement).value;
+        
+        if (query !== "") {
+            try {
+                const response = await fetch('/api/locations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch locations');
+                }
+
+                const data = await response.json();
+                
+                // Store the locations in localStorage for the map page
+                localStorage.setItem('mapLocations', JSON.stringify(data.locations));
+                
+                // Call onSearch if provided
+                if (onSearch) {
+                    onSearch(data.locations);
+                }
+
+                // Navigate to map page
+                router.push('/map');
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+                // Handle error appropriately
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
