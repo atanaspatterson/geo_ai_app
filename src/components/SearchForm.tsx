@@ -81,9 +81,7 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
         if (error) {
             console.error('Error logging in with Google:', error);
         }};
-    
-        const [isLoading, setIsLoading] = useState(false);
-        const router = useRouter();
+
 
     const toggleMode = (mode: string) => {
         setActiveMode(mode);
@@ -231,9 +229,6 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
         }
     };
 
-    const toggleMode = (mode: string) => {
-        setActiveMode(mode);
-    };
 
     // Move Google Sign-In script loading to a separate component or handle differently
     useEffect(() => {
@@ -252,17 +247,6 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
             };
         }
     }, []);
-
-    async function handleSignInWithGoogle(response: any) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
-
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        const { data, error } = await supabase.auth.signInWithIdToken({
-            provider: 'google',
-            token: response.credential,
-        });
-    }
 
     // Don't render anything until client-side hydration is complete
     if (!isClient) {
@@ -356,27 +340,6 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
                 </button>
             </div>
 
-            {typeof window !== 'undefined' && (
-                <div className="google-button-container" style={{ position: 'absolute', top: '20px', left: '15px', zIndex: 1000 }}>
-                    <div id="g_id_onload"
-                        data-client_id="184726098190-1m606884he357gfcn05efog6k52bi2bb.apps.googleusercontent.com"
-                        data-context="signin"
-                        data-ux_mode="popup"
-                        data-login_uri="https://mphmxmuammhnxmucxlko.supabase.co/auth/v1/callback"
-                        data-auto_prompt="false">
-                    </div>
-
-                    <div className="g_id_signin"
-                        data-type="standard"
-                        data-shape="rectangular"
-                        data-theme="outline"
-                        data-text="signin_with"
-                        data-size="large"
-                        data-logo_alignment="left">
-                    </div>
-                </div>
-            )}
-        </div>
             {/* Query History Section */}
             {user && (
                 <div className={styles['query-history-container']}>
