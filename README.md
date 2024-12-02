@@ -44,8 +44,8 @@ Before you begin, ensure you have installed:
    # Add your environment variables: 
    OpenAI API Key: OPENAI_API_KEY
    Google Maps API Key: GOOGLE_MAPS_API_KEY
-   supaBase URL: SUPABASE_URL
-   supaBase Anon Key: SUPABASE_ANON_KEY
+   supaBase URL: NEXT_PUBLIC_SUPABASE_URL
+   supaBase Anon Key: NEXT_PUBLIC_SUPABASE_ANON_KEY
 
    ```
 
