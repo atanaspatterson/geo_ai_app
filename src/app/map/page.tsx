@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { generateSatelliteImage } from 'src/app/map/coordinates'
 
 type MapInstance = google.maps.Map
 type MarkerInstance = google.maps.Marker
@@ -19,6 +20,7 @@ declare global {
     interface Window {
         initMap?: () => void
         google: typeof google
+        generateSatelliteImage?: (lat: number, lng: number) => void
     }
 }
 
@@ -35,6 +37,9 @@ export default function MapPage() {
     }
 
     useEffect(() => {
+        // Make the image generation function globally accessible
+        window.generateSatelliteImage = generateSatelliteImage
+
         // Load locations from localStorage
         const savedLocations = localStorage.getItem('mapLocations');
         if (savedLocations) {
@@ -84,13 +89,17 @@ export default function MapPage() {
 
                         const infoWindow = new google.maps.InfoWindow({
                             content: `
-                                <div class="p-3">
-                                    <h3 class="font-bold text-lg">${location.title}</h3>
-                                    <p class="text-gray-600">${location.description}</p>
-                                    <p class="text-sm text-gray-500 mt-2">Type: ${location.type}</p>
-                                </div>
-                            `,
-                            maxWidth: 300
+                            <div class="p-3" style="color: #333333;">
+                                <h3 class="font-bold text-lg" style="color: #000000;">${location.title}</h3>
+                                <p class="text-gray-800" style="color: #333333;">${location.description}</p>
+                                <p class="text-sm" style="color: #666666;">Type: ${location.type}</p>
+                                <button onclick="window.generateSatelliteImage(${location.coordinates.lat}, ${location.coordinates.lng})" 
+                                        class="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                    Generate Satellite Image
+                                </button>
+                            </div>
+                        `,
+                        maxWidth: 300
                         });
 
                         marker.addListener('click', () => {
@@ -140,10 +149,15 @@ export default function MapPage() {
                 script.parentNode.removeChild(script)
             }
             window.initMap = undefined
+            window.generateSatelliteImage = undefined
             // Clear markers
             markers.forEach(marker => marker.setMap(null));
         }
     }, [])
+
+    // Rest of the component remains the same as in the original file
+    // (handleResetMap, handleToggleTerrain, and return statement)
+    // ...
 
     const handleResetMap = () => {
         if (mapInstance && markers.length > 0) {
