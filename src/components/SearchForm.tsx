@@ -317,7 +317,7 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
                         height="24px"
                         className={styles['arrow-icon']}
                     >
-                        <circle cx="12" cy="12" r="11" stroke="white" strokeWidth="2" fill="none" />
+                        <circle cx="12" cy="12" r="11" stroke="white" strokeWidth="2" fill="#3e4958" />
                         <path d="M12 16l4-4h-3V8h-2v4H8l4 4z" />
                     </svg>
                 </button>
