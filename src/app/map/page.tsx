@@ -1,6 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Box, TextField, Paper, IconButton, InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { CircleLoader } from 'react-spinners';
 import { generateSatelliteImage } from 'src/app/map/coordinates'
 
 type MapInstance = google.maps.Map
@@ -54,10 +59,9 @@ export default function MapPage() {
                     center: initialCenter,
                     zoom: 12,
                     mapTypeControl: true,
-                    streetViewControl: true,
                     fullscreenControl: true,
                     zoomControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeId: google.maps.MapTypeId.SATELLITE,
                     styles: [
                         {
                             featureType: "all",
@@ -154,7 +158,6 @@ export default function MapPage() {
             markers.forEach(marker => marker.setMap(null));
         }
     }, [])
-
     // Rest of the component remains the same as in the original file
     // (handleResetMap, handleToggleTerrain, and return statement)
     // ...
@@ -182,52 +185,69 @@ export default function MapPage() {
     }
 
     return (
-        <main className="w-full">
-            <div className="mb-4">
-                <div className="flex justify-center gap-2">
-                    <h1 className="text-2xl font-bold">GEO AI MAP CLIENT</h1>
+        <main className="flex flex-col min-h-screen"> {/* Changed from h-screen to min-h-screen */}
+            <Header />
+
+            {/* Main content area with the map */}
+            <div className="relative flex-1 mt-20"> {/* Changed pt-20 to mt-20 and moved it here */}
+                {/* Search box container */}
+                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-md px-4">
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            borderRadius: '24px',
+                            px: 2,
+                            py: 0.5,
+                            backgroundColor: 'white',
+                            '&:hover': {
+                                boxShadow: 4,
+                            },
+                            transition: 'box-shadow 0.3s ease-in-out',
+                        }}
+                    >
+                        <IconButton sx={{ p: '10px' }} aria-label="search">
+                            <SearchIcon />
+                        </IconButton>
+                        <InputBase
+                            fullWidth
+                            placeholder="Search locations..."
+                            sx={{
+                                ml: 1,
+                                flex: 1,
+                                '& input': {
+                                    padding: '8px 0',
+                                    fontSize: '0.95rem',
+                                },
+                            }}
+                        />
+                    </Paper>
                 </div>
-                {locations.length > 0 && (
-                    <p className="text-center text-gray-600 mt-2">
-                        Showing {locations.length} locations
-                    </p>
+
+                {/* Map container */}
+                <div
+                    ref={mapRef}
+                    className="w-full h-[calc(100vh-152px)]"
+                    style={{ backgroundColor: 'gray-100' }}
+                />
+
+                {isLoading && (
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <CircleLoader color="#800080" size={50} />
+                    </Box>
                 )}
             </div>
-            <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
-                <div className="relative">
-                    <div
-                        ref={mapRef}
-                        className="h-[600px] w-full"
-                    />
-                    {isLoading && (
-                        <div
-                            className="absolute inset-0 bg-gray-100 animate-pulse"
-                            id="map-loading"
-                        >
-                            <div className="h-full w-full flex items-center justify-center">
-                                <p className="text-gray-500">Loading map...</p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
 
-            <div className="mt-4 p-4 bg-white rounded-lg shadow border border-gray-200">
-                <div className="flex justify-center gap-4">
-                    <button
-                        onClick={handleResetMap}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                    >
-                        Show All Markers
-                    </button>
-                    <button
-                        onClick={handleToggleTerrain}
-                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-                    >
-                        Toggle Terrain
-                    </button>
-                </div>
-            </div>
+            <Footer />
         </main>
     )
 }
