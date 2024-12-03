@@ -255,37 +255,6 @@ function SearchForm({ placeholder = "", onSearch }: SearchFormProps) {
     return (
         <div className={styles['search-container'] }>
             <h1 className={styles['logo-text']}>GeoAI</h1>
-
-            <div className={authStyles.authContainer} style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 1000 }}>
-                {!user ? (
-                    <button 
-                        className={authStyles.signInButton} 
-                        onClick={handleSignInWithGoogle}
-                    >
-                        Sign in with Google
-                    </button>
-                ) : (
-                    <div className={authStyles.userInfo}>
-                        {user.user_metadata.avatar_url && (
-                            <img 
-                                src={user.user_metadata.avatar_url} 
-                                alt="User Avatar" 
-                                className={authStyles.userAvatar}
-                            />
-                        )}
-                        <span className={authStyles.userEmail}>
-                            {user.email}
-                        </span>
-                        <button 
-                            className={authStyles.signOutButton}
-                            onClick={() => supabase.auth.signOut()}
-                        >
-                            Sign Out
-                        </button>
-                    </div>
-                )}
-            </div>
-
             <form className={styles.searchform} onSubmit={handleSubmit}>
                 <input
                     ref={searchInputRef}

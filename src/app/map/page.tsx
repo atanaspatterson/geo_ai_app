@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Box, TextField, Paper, IconButton, InputBase } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { CircleLoader } from 'react-spinners';
 
 type MapInstance = google.maps.Map
@@ -147,51 +149,70 @@ export default function MapPage() {
         }
     }, [])
 
-    const handleResetMap = () => {
-        if (mapInstance && markers.length > 0) {
-            const bounds = new google.maps.LatLngBounds();
-            markers.forEach(marker => {
-                bounds.extend(marker.getPosition()!);
-            });
-            mapInstance.fitBounds(bounds);
-            const padding = { top: 50, right: 50, bottom: 50, left: 50 };
-            mapInstance.panToBounds(bounds, padding);
-        }
-    }
-
-    const handleToggleTerrain = () => {
-        if (mapInstance) {
-            const currentMapTypeId = mapInstance.getMapTypeId()
-            const newMapTypeId = currentMapTypeId === google.maps.MapTypeId.TERRAIN
-                ? google.maps.MapTypeId.ROADMAP
-                : google.maps.MapTypeId.TERRAIN
-            mapInstance.setMapTypeId(newMapTypeId)
-        }
-    }
-
     return (
-        <main className="w-full">
-            <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
-                <div className="relative">
-                    <div
-                        ref={mapRef}
-                        className="h-[600px] w-full"
-                    />
-                    {isLoading && (
-                        <Box
+        <main className="flex flex-col min-h-screen"> {/* Changed from h-screen to min-h-screen */}
+            <Header />
+
+            {/* Main content area with the map */}
+            <div className="relative flex-1 mt-20"> {/* Changed pt-20 to mt-20 and moved it here */}
+                {/* Search box container */}
+                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-md px-4">
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            borderRadius: '24px',
+                            px: 2,
+                            py: 0.5,
+                            backgroundColor: 'white',
+                            '&:hover': {
+                                boxShadow: 4,
+                            },
+                            transition: 'box-shadow 0.3s ease-in-out',
+                        }}
+                    >
+                        <IconButton sx={{ p: '10px' }} aria-label="search">
+                            <SearchIcon />
+                        </IconButton>
+                        <InputBase
+                            fullWidth
+                            placeholder="Search locations..."
                             sx={{
-                                position: 'absolute',
-                                inset: 0,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
+                                ml: 1,
+                                flex: 1,
+                                '& input': {
+                                    padding: '8px 0',
+                                    fontSize: '0.95rem',
+                                },
                             }}
-                        >
-                            <CircleLoader color="#800080" size={50} />
-                        </Box>
-                    )}
+                        />
+                    </Paper>
                 </div>
+
+                {/* Map container */}
+                <div
+                    ref={mapRef}
+                    className="w-full h-[calc(100vh-152px)]"
+                    style={{ backgroundColor: 'gray-100' }}
+                />
+
+                {isLoading && (
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <CircleLoader color="#800080" size={50} />
+                    </Box>
+                )}
             </div>
+
+            <Footer />
         </main>
     )
 }
