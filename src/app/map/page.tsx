@@ -49,10 +49,9 @@ export default function MapPage() {
                     center: initialCenter,
                     zoom: 12,
                     mapTypeControl: true,
-                    streetViewControl: true,
                     fullscreenControl: true,
                     zoomControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeId: google.maps.MapTypeId.SATELLITE,
                     styles: [
                         {
                             featureType: "all",
@@ -169,16 +168,6 @@ export default function MapPage() {
 
     return (
         <main className="w-full">
-            <div className="mb-4">
-                <div className="flex justify-center gap-2">
-                    <h1 className="text-2xl font-bold">GEO AI MAP CLIENT</h1>
-                </div>
-                {locations.length > 0 && (
-                    <p className="text-center text-gray-600 mt-2">
-                        Showing {locations.length} locations
-                    </p>
-                )}
-            </div>
             <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
                 <div className="relative">
                     <div
@@ -195,23 +184,6 @@ export default function MapPage() {
                             </div>
                         </div>
                     )}
-                </div>
-            </div>
-
-            <div className="mt-4 p-4 bg-white rounded-lg shadow border border-gray-200">
-                <div className="flex justify-center gap-4">
-                    <button
-                        onClick={handleResetMap}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                    >
-                        Show All Markers
-                    </button>
-                    <button
-                        onClick={handleToggleTerrain}
-                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-                    >
-                        Toggle Terrain
-                    </button>
                 </div>
             </div>
         </main>
