@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { CircleLoader } from 'react-spinners';
 
 type MapInstance = google.maps.Map
 type MarkerInstance = google.maps.Marker
@@ -175,14 +178,17 @@ export default function MapPage() {
                         className="h-[600px] w-full"
                     />
                     {isLoading && (
-                        <div
-                            className="absolute inset-0 bg-gray-100 animate-pulse"
-                            id="map-loading"
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                inset: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
                         >
-                            <div className="h-full w-full flex items-center justify-center">
-                                <p className="text-gray-500">Loading map...</p>
-                            </div>
-                        </div>
+                            <CircleLoader color="#800080" size={50} />
+                        </Box>
                     )}
                 </div>
             </div>
