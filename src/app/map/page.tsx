@@ -16,7 +16,6 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-
 type MapInstance = google.maps.Map
 type MarkerInstance = google.maps.Marker
 
@@ -83,6 +82,9 @@ export default function MapPage() {
             if (!mapRef.current) return
 
             try {
+                // Check if map is already initialized
+                if (mapInstance) return;
+
                 const mapOptions: google.maps.MapOptions = {
                     center: initialCenter,
                     zoom: 12,
@@ -105,54 +107,57 @@ export default function MapPage() {
                 setMapInstance(map)
 
                 // Create markers for all locations
-                const savedLocations = localStorage.getItem('mapLocations');
-                if (savedLocations) {
-                    const locations: Location[] = JSON.parse(savedLocations);
-                    const bounds = new google.maps.LatLngBounds();
-                    const newMarkers: MarkerInstance[] = [];
+                const locations: Location[] = JSON.parse(localStorage.getItem('mapLocations') || '[]');
+                const bounds = new google.maps.LatLngBounds();
+                const newMarkers: MarkerInstance[] = [];
+                const markersWithInfoWindows: { marker: MarkerInstance, infoWindow: google.maps.InfoWindow }[] = [];
 
-                    locations.forEach((location) => {
-                        const marker = new google.maps.Marker({
-                            position: location.coordinates,
-                            map: map,
-                            title: location.title,
-                            animation: google.maps.Animation.DROP
-                        });
 
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: `
-                            <div class="p-3" style="color: #333333;">
-                                <h3 class="font-bold text-lg" style="color: #000000;">${location.title}</h3>
-                                <p class="text-gray-800" style="color: #333333;">${location.description}</p>
-                                <p class="text-sm" style="color: #666666;">Type: ${location.type}</p>
-                                <button onclick="window.generateSatelliteImage(${location.coordinates.lat}, ${location.coordinates.lng})" 
-                                        class="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                    Generate Satellite Image
-                                </button>
-                            </div>
-                        `,
-                            maxWidth: 300
-                        });
-
-                        marker.addListener('click', () => {
-                            infoWindow.open({
-                                map,
-                                anchor: marker
-                            });
-                        });
-
-                        bounds.extend(location.coordinates);
-                        newMarkers.push(marker);
+                locations.forEach((location) => {
+                    const marker = new google.maps.Marker({
+                        position: location.coordinates,
+                        map: map,
+                        title: location.title,
+                        animation: google.maps.Animation.DROP
                     });
 
-                    setMarkers(newMarkers);
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                        <div class="p-3" style="color: #333333;">
+                            <h3 class="font-bold text-lg" style="color: #000000;">${location.title}</h3>
+                            <p class="text-gray-800" style="color: #333333;">${location.description}</p>
+                            <p class="text-sm" style="color: #666666;">Type: ${location.type}</p>
+                            <button onclick="window.generateSatelliteImage(${location.coordinates.lat}, ${location.coordinates.lng})" 
+                                    class="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                Generate Satellite Image
+                            </button>
+                        </div>
+                    `,
+                        maxWidth: 300
+                    });
 
-                    // Fit map to show all markers
-                    if (locations.length > 0) {
-                        map.fitBounds(bounds);
-                        const padding = { top: 50, right: 50, bottom: 50, left: 50 };
-                        map.panToBounds(bounds, padding);
-                    }
+                    marker.addListener('click', () => {
+                        
+                        markersWithInfoWindows.forEach(({ infoWindow: existingInfoWindow }) => {
+                            existingInfoWindow.close();
+                        });
+                        infoWindow.open({
+                            map,
+                            anchor: marker
+                        });
+                    });
+                    markersWithInfoWindows.push({ marker, infoWindow });
+                    bounds.extend(location.coordinates);
+                    newMarkers.push(marker);
+                });
+
+                setMarkers(newMarkers);
+
+                // Fit map to show all markers
+                if (locations.length > 0) {
+                    map.fitBounds(bounds);
+                    const padding = { top: 50, right: 50, bottom: 50, left: 50 };
+                    map.panToBounds(bounds, padding);
                 }
 
                 setIsLoading(false);
@@ -163,28 +168,41 @@ export default function MapPage() {
             }
         }
 
-        window.initMap = initMap
+        // Global function to initialize map
+        window.initMap = initMap;
 
-        const script = document.createElement('script')
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&callback=initMap`
-        script.async = true
-        script.defer = true
-        script.onerror = () => {
-            console.error('Failed to load Google Maps script')
-            setIsLoading(false)
-        }
-        document.head.appendChild(script)
-
-        return () => {
-            if (script.parentNode) {
-                script.parentNode.removeChild(script)
+        // Check if Google Maps is already loaded
+        if (window.google && window.google.maps) {
+            initMap();
+        } else {
+            // Load Google Maps script only if not already loaded
+            const existingScript = document.querySelector('script[src^="https://maps.googleapis.com/maps/api/js"]');
+            
+            if (!existingScript) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&callback=initMap`;
+                script.async = true;
+                script.defer = true;
+                
+                script.onerror = () => {
+                    console.error('Failed to load Google Maps script');
+                    setIsLoading(false);
+                };
+                
+                document.head.appendChild(script);
             }
-            window.initMap = undefined
-            window.generateSatelliteImage = undefined
+        }
+
+        // Cleanup function
+        return () => {
             // Clear markers
             markers.forEach(marker => marker.setMap(null));
+            
+            // Remove global functions
+            window.initMap = undefined;
+            window.generateSatelliteImage = undefined;
         }
-    }, [])
+    }, [mapInstance]) // Add mapInstance to dependency array to prevent multiple initializations
 
     const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
