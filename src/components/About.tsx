@@ -16,69 +16,75 @@ function AboutPage() {
                 </p>
 
                 <div className={styles['team-container']}>
-                    <h2 className={styles['section-header']}>Group 1 Students</h2>
-                    <div className={styles['team-row']}>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 1" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>John Doe</h3>
-                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
-                        </div>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 2" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Jane Smith</h3>
-                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
-                        </div>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 3" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Bob Johnson</h3>
-                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
-                        </div>
-                    </div>
-
-                    <h2 className={styles['section-header']}>Group 2 Students</h2>
-                    <div className={styles['team-row']}>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 4" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Alice Williams</h3>
-                            <p className={styles['team-info']}>Data Science Major, Class of 2025</p>
-                        </div>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 5" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>David Lee</h3>
-                            <p className={styles['team-info']}>Data Science Major, Class of 2025</p>
-                        </div>
-                        <div className={styles['team-member']}>
-                            <img src="https://via.placeholder.com/150" alt="Student 6" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Emily Chen</h3>
-                            <p className={styles['team-info']}>Data Science Major, Class of 2025</p>
-                        </div>
-                    </div>
-
                     <h2 className={styles['section-header']}>Professors</h2>
                     <div className={styles['team-row']}>
                         <div className={styles['team-member']}>
                             <img src="https://via.placeholder.com/150" alt="Professor 1" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Dr. Sarah Kim</h3>
+                            <h3 className={styles['team-name']}>Christopher Brooks</h3>
                             <p className={styles['team-info']}>Assistant Professor of Computer Science</p>
                         </div>
                         <div className={styles['team-member']}>
                             <img src="https://via.placeholder.com/150" alt="Professor 2" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Dr. Michael Chen</h3>
+                            <h3 className={styles['team-name']}>David-Guy Brizan</h3>
                             <p className={styles['team-info']}>Associate Professor of Data Science</p>
                         </div>
                     </div>
 
-                    <h2 className={styles['section-header']}>Collaborators</h2>
+
+                    <h2 className={styles['section-header']}>Frontend & Website Functionality</h2>
+                    <div className={styles['team-row']}>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="William Stout" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>William Stout</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Atanas Patterson-Ianev" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>Atanas Patterson-Ianev</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Noah Steaderman" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>Noah Steaderman</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                    </div>
+
+                    <h2 className={styles['section-header']}>Backend & AI Models</h2>
+                    <div className={styles['team-row']}>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Student 4" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>Hannah Gamracy</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Student 5" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>Param Sohdhi</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Student 6" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>Noga Gottlieb</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                        <div className={styles['team-member']}>
+                            <img src="https://via.placeholder.com/150" alt="Student 6" className={styles['team-photo']} />
+                            <h3 className={styles['team-name']}>George Sphicas</h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2025</p>
+                        </div>
+                    </div>
+
+                    <h2 className={styles['section-header']}>More Collaborators</h2>
                     <div className={styles['team-row']}>
                         <div className={styles['team-member']}>
                             <img src="https://via.placeholder.com/150" alt="Collaborator 1" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Lisa Wang</h3>
-                            <p className={styles['team-info']}>GIS Analyst, City of San Francisco</p>
+                            <h3 className={styles['team-name']}>Sahil</h3>
+                            <p className={styles['team-info']}>Masters in Computer Science Student</p>
                         </div>
                         <div className={styles['team-member']}>
                             <img src="https://via.placeholder.com/150" alt="Collaborator 2" className={styles['team-photo']} />
-                            <h3 className={styles['team-name']}>Mark Nguyen</h3>
-                            <p className={styles['team-info']}>Data Scientist, Google AI</p>
+                            <h3 className={styles['team-name']}>Rutha </h3>
+                            <p className={styles['team-info']}>Computer Science Major, Class of 2026</p>
                         </div>
                     </div>
                 </div>
