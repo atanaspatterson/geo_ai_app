@@ -2,7 +2,7 @@
 
 export const generateSatelliteImage = (lat: number, lng: number) => {
     // Use environment variable for API key
-    const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=512x512&maptype=satellite&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+    const imageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=512x512&maptype=satellite&key=${process.env.GOOGLE_MAPS_API_KEY}`
     
     // Create a modal container
     const modalContainer = document.createElement('div')
